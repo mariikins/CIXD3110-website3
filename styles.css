@@ -1,4 +1,126 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+/* absurd.css — load AFTER styles.css */
+
+/* ---------- static chaos: size, overlap, tilt ---------- */
+.section { position: relative; overflow-x: clip; }
+.section + .section, .cascade-story, .sunday, .visit { margin-top: -6rem; }
+.section:nth-child(odd) { rotate: -1.2deg; scale: 1.04; }
+.section:nth-child(even) { rotate: 1.2deg; scale: 1.04; }
+
+.ghost {
+  position: absolute; z-index: 0; max-width: none; pointer-events: none;
+  opacity: .38; mix-blend-mode: multiply; border-radius: 50%;
+  rotate: var(--spin, 0deg); scale: 1.3;
+}
+
+.cursor-orbit { width: 90px; height: 90px; background: rgba(244,255,95,.25); }
+.cursor-orbit.hot { width: 240px; height: 240px; }
+
+.ticker { height: 92px; font-size: 2.4rem; text-transform: uppercase; }
+.ticker div { animation-duration: 9s; gap: 3rem; }
+
+/* hero */
+.hero, .hero-copy { min-height: 150svh; }
+.hero-photo { inset: -35%; scale: 1.7; }
+.hero h1 {
+  font-size: clamp(9rem, 42vw, 50rem); line-height: .55; letter-spacing: -.13em;
+  margin-right: -20vw; text-shadow: .03em .03em 0 var(--coral);
+}
+.hero h1 span:nth-child(2) { margin-left: -.05em; text-shadow: -.04em .04em 0 var(--blue); }
+.eyebrow { font-size: 2.2rem; }
+.hero-bottom > p { font-size: clamp(1.6rem, 3vw, 3rem); width: min(50rem, 60vw); rotate: -2deg; }
+.round-link { width: 240px; height: 240px; flex-basis: 240px; font-size: 1.3rem; }
+.map-link { width: 300px; height: 300px; flex-basis: 300px; font-size: 1.6rem; }
+
+/* giant headings that crash into their neighbours */
+.route-heading h2, .anatomy-intro h2, .time-copy h2, .visit-heading h2 {
+  font-size: clamp(5rem, 20vw, 26rem); line-height: .7; letter-spacing: -.1em;
+  margin-right: -12vw; position: relative; z-index: 5;
+}
+.route-heading, .anatomy-intro, .time-copy { grid-template-columns: 1fr; }
+.route-heading p, .anatomy-intro > p, .time-copy > p {
+  position: relative; z-index: 6; max-width: 24rem; justify-self: end; margin-top: -5rem;
+  padding: 1rem; color: var(--ink); background: var(--acid); border: var(--line); rotate: 4deg;
+}
+
+/* route machine */
+.route-button { font-size: clamp(2rem, 7vw, 7rem); letter-spacing: -.06em; }
+.route-button:hover, .route-button.active { rotate: -1.5deg; scale: 1.06; }
+.route-result { rotate: 2.5deg; scale: 1.1; box-shadow: 34px 34px 0 var(--blue); }
+.route-result h3 { max-width: none; font-size: clamp(4rem, 12vw, 13rem); rotate: -3deg; line-height: .8; }
+.route-result::after { font-size: 44rem; }
+
+/* anatomy */
+.hotspot b { width: 76px; height: 76px; font-size: 1.1rem; }
+.hotspot span { font-size: 1.3rem; }
+.stop-card { rotate: -2.5deg; scale: 1.08; box-shadow: 34px 34px 0 var(--acid); }
+.stop-image-wrap img { scale: 1.7; }
+.stop-card:hover .stop-image-wrap img { rotate: 6deg; scale: 2.1; }
+.stop-copy h3 { font-size: clamp(4rem, 10vw, 11rem); line-height: .78; overflow-wrap: anywhere; }
+
+/* time fold */
+.compare { min-height: 680px; }
+.year { font-size: 3.2rem; }
+
+/* cascade */
+.cascade-number { font-size: clamp(30rem, 95vw, 95rem); opacity: .5; }
+.cascade-copy { z-index: 6; }
+.cascade-copy h2 { font-size: clamp(6rem, 17vw, 20rem); margin-right: -30vw; line-height: .68; }
+.cascade-photo { min-height: 1150px; margin-left: -18vw; }
+.cascade-photo img { scale: 1.55; }
+
+/* sunday */
+.sunday h2 { font-size: clamp(9rem, 34vw, 42rem); line-height: .55; }
+.sunday h2 span { display: inline-block; }
+.kind-chaos { min-height: 340px; }
+.kind-chaos b { font-size: clamp(3.5rem, 9vw, 9rem); }
+.kind-chaos i { font-size: 11rem; display: inline-block; }
+
+/* visit + footer */
+.visit-grid h3 { font-size: clamp(3rem, 6.5vw, 8rem); line-height: .8; }
+.visit-grid article:nth-child(odd) { rotate: -2.5deg; }
+.visit-grid article:nth-child(even) { rotate: 2.5deg; }
+footer { overflow: hidden; }
+.footer-title { font-size: clamp(9rem, 45vw, 55rem); white-space: nowrap; rotate: -6deg; line-height: .6; }
+
+/* click bursts (spawned by absurd.js) */
+.boom {
+  position: fixed; z-index: 998; pointer-events: none; translate: -50% -50%;
+  color: var(--c); font-size: clamp(4rem, 14vw, 14rem); font-weight: 700;
+  letter-spacing: -.08em; white-space: nowrap; mix-blend-mode: difference;
+}
+
+/* ---------- the spinning (motion-safe only) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes spin { to { rotate: 360deg; } }
+  @keyframes spin-rev { to { rotate: -360deg; } }
+  @keyframes wobble { 0%,100% { rotate: -4deg; translate: 0 0; } 50% { rotate: 5deg; translate: 2vw -1vw; } }
+  @keyframes wobble-rev { 0%,100% { rotate: 5deg; translate: 0 0; } 50% { rotate: -4deg; translate: -2vw 1vw; } }
+  @keyframes breathe { 0%,100% { scale: 1.5; } 50% { scale: 2; } }
+  @keyframes boom {
+    0% { scale: .2; rotate: var(--r); opacity: 1; }
+    100% { scale: 2.2; rotate: calc(var(--r) + 200deg); opacity: 0; }
+  }
+
+  .boom { animation: boom 1.2s ease-out forwards; }
+  .hero-photo { animation: spin 80s linear infinite; }
+  .hero h1 span:nth-child(1) { animation: wobble 6s ease-in-out infinite; }
+  .hero h1 span:nth-child(2) { animation: wobble-rev 5s ease-in-out infinite; }
+  .round-link, .map-link { animation: spin 6s linear infinite; }
+  .route-heading h2, .time-copy h2 { animation: wobble 7s ease-in-out infinite; }
+  .anatomy-intro h2, .visit-heading h2 { animation: wobble-rev 8s ease-in-out infinite; }
+  .route-result::after { animation: spin 25s linear infinite; }
+  .hill-diagram::before { animation: spin 18s linear infinite; }
+  .hill-diagram::after { animation: spin-rev 14s linear infinite; }
+  .compare-line span { animation: spin 3s linear infinite; }
+  .cascade-number { animation: spin 70s linear infinite; }
+  .cascade-photo img { animation: breathe 8s ease-in-out infinite; }
+  .cascade-copy h2 { animation: wobble 9s ease-in-out infinite; }
+  .sunday h2 span { animation: spin 9s linear infinite; }
+  .kind-chaos i { animation: spin-rev 4s linear infinite; }
+  .footer-title { animation: wobble 10s ease-in-out infinite; }
+  .visit-grid article:nth-child(odd) h3 { animation: wobble 6s ease-in-out infinite; }
+  .visit-grid article:nth-child(even) h3 { animation: wobble-rev 6s ease-in-out infinite; }
+}@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 :root {
   --blue: #1946ff;

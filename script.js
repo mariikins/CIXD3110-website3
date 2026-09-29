@@ -1,4 +1,47 @@
-const routeData = {
+// absurd.js — load AFTER your main script
+(() => {
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const root = document.documentElement;
+
+  // 1. Blown-up, overlapping ghost photos behind/over every section
+  const pics = ["fountain-visitors", "cascade", "joan", "meridian-1936"].map((n) => `assets/${n}.jpg`);
+  document.querySelectorAll(".section").forEach((section, i) => {
+    const ghost = document.createElement("img");
+    ghost.className = "ghost";
+    ghost.src = pics[i % pics.length];
+    ghost.alt = "";
+    ghost.setAttribute("aria-hidden", "true");
+    ghost.style.top = `${i % 2 ? -10 : 25}%`;
+    ghost.style[i % 2 ? "left" : "right"] = "-22vw";
+    ghost.style.width = `${55 + i * 9}vw`;
+    section.prepend(ghost);
+  });
+
+  // 2. Scroll = spin. Ghost photos rotate as you scroll.
+  if (!calm) {
+    addEventListener(
+      "scroll",
+      () => root.style.setProperty("--spin", `${scrollY * 0.18}deg`),
+      { passive: true }
+    );
+  }
+
+  // 3. Click anywhere: giant word explodes
+  const words = ["WATER!!", "JOAN!!", "13 BASINS", "DRUMS", "AAAA", "GRAVITY", "BRONZE", "SUNDAY", "SPLASH", "HILL"];
+  const colors = ["var(--acid)", "var(--coral)", "var(--sky)", "white"];
+  addEventListener("click", (event) => {
+    if (calm) return;
+    const boom = document.createElement("b");
+    boom.className = "boom";
+    boom.textContent = words[(Math.random() * words.length) | 0];
+    boom.style.left = `${event.clientX}px`;
+    boom.style.top = `${event.clientY}px`;
+    boom.style.setProperty("--r", `${Math.random() * 60 - 30}deg`);
+    boom.style.setProperty("--c", colors[(Math.random() * colors.length) | 0]);
+    document.body.append(boom);
+    setTimeout(() => boom.remove(), 1200);
+  });
+})();const routeData = {
   water: {
     stamp: "WATER PERSON",
     meta: "45 min · start at W Street",
